@@ -1,0 +1,40 @@
+package main
+import (
+	"game/roles"
+	"game/config"
+	"game/listener"
+	"log"
+	"github.com/hajimehoshi/ebiten"
+	// "github.com/hajimehoshi/ebiten/ebitenutil"
+)
+
+
+var (
+	fenlinwan *roles.Role
+	drawImage *ebiten.Image
+	roleMainOP  *ebiten.DrawImageOptions
+)
+
+func update(screen *ebiten.Image) error {
+	if (ebiten.IsDrawingSkipped()) {
+		return nil
+	}
+	fenlinwan.FrameCountPlus()
+	listener.JudgeKeyPress(fenlinwan)
+	i := (fenlinwan.GetFramesCount() / config.WindowFrames) % fenlinwan.GetAnimationFrames()
+	roleMainOP.GeoM.Reset()
+	if !fenlinwan.GetDirection() {
+		roleMainOP.GeoM.Scale(-1, 1) //反向
+	}
+	roleMainOP.GeoM.Translate(fenlinwan.GetPosition())
+	screen.DrawImage(fenlinwan.RoleAnimationCollection[fenlinwan.GetStatus()][i], roleMainOP)
+	return nil
+}
+func main() {
+	roleMainOP = &ebiten.DrawImageOptions{}
+	fenlinwan = roles.GetRole("fenglinwan")
+	fenlinwan.SetPosition(100, config.ScreentHeight - 120)
+	if err := ebiten.Run(update, config.ScreentWidth, config.ScreentHeight, 1, "枫林晚"); err != nil {
+		log.Fatal("报错", err)
+	}
+}
