@@ -145,10 +145,15 @@ func (role *Role) Stand() {
 }
 func (role *Role) Jump() {
 	if (role.count != 0) { // 判断是否正在加锁
+		if role.roleStatus == "jumpping" {
+			role.StopJump()
+		}
 		return
 	}
 	role.roleStatus = "jumpping"
 	role.Count()
+	role.ResetCountFrames()
+	role.y -= float64(role.jumpFrameHeight - role.runFrameHeight)
 }
 func (role *Role) StopJump() {
 	if role.roleStatus == "jumpping" {
@@ -168,6 +173,7 @@ func (role *Role) StopJump() {
 			role.jumpDirection = ""
 			role.ResetCount()
 			role.Stand()
+			role.y += float64(role.jumpFrameHeight - role.runFrameHeight)
 		}
 	}
 }
@@ -178,12 +184,16 @@ func (role *Role) Attack() {
 	 }
 	role.roleStatus = "attack"
 	role.Count()
+	role.ResetCountFrames()
+	// 修复攻击图片过高时产生误差
+	role.y -= float64(role.attackFrameHeight - role.runFrameHeight)
 }
 func (role *Role) StopAttack() {
 	if role.roleStatus == "attack" {
 		role.Count()
 		if role.count >= config.WindowFrames * (role.maxAttackFrames - 1) {
 			role.ResetCount()
+			role.y += float64(role.attackFrameHeight - role.runFrameHeight)
 			role.Stand()
 		}
 	}
