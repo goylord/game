@@ -1,9 +1,10 @@
 package listener
 
 import (
-	"github.com/hajimehoshi/ebiten/inpututil"
-	"github.com/hajimehoshi/ebiten"
 	"game/roles"
+
+	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
 func JudgeKeyPress(role *roles.Role) {
@@ -13,7 +14,7 @@ func JudgeKeyPress(role *roles.Role) {
 	k := inpututil.KeyPressDuration(ebiten.KeyK)
 	if d >= 1 { // 按了D
 		role.Run()
-	} else if (a >= 1) { // 按了A
+	} else if a >= 1 { // 按了A
 		role.RunBack()
 	} else {
 		role.Stand()

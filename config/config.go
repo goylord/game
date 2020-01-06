@@ -1,7 +1,7 @@
 package config
 
 const (
-	ScreentWidth = 800
+	ScreentWidth  = 800
 	ScreentHeight = 480
-	WindowFrames = 5
+	WindowFrames  = 5
 )

@@ -1,23 +1,24 @@
 package main
+
 import (
-	"game/roles"
+	"fmt"
 	"game/config"
 	"game/listener"
+	"game/roles"
 	"log"
-	"fmt"
+
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
-
 var (
-	fenlinwan *roles.Role
-	drawImage *ebiten.Image
-	roleMainOP  *ebiten.DrawImageOptions
+	fenlinwan  *roles.Role
+	drawImage  *ebiten.Image
+	roleMainOP *ebiten.DrawImageOptions
 )
 
 func update(screen *ebiten.Image) error {
-	if (ebiten.IsDrawingSkipped()) {
+	if ebiten.IsDrawingSkipped() {
 		return nil
 	}
 	fenlinwan.FrameCountPlus()
@@ -35,7 +36,7 @@ func update(screen *ebiten.Image) error {
 func main() {
 	roleMainOP = &ebiten.DrawImageOptions{}
 	fenlinwan = roles.GetRole("superman")
-	fenlinwan.SetPosition(100, config.ScreentHeight - 120)
+	fenlinwan.SetPosition(100, config.ScreentHeight-120)
 	if err := ebiten.Run(update, config.ScreentWidth, config.ScreentHeight, 1, "枫林晚"); err != nil {
 		log.Fatal("报错", err)
 	}
